@@ -10,7 +10,7 @@ namespace Hooks {
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
-        inline static constexpr std::size_t idx = 55; // 0x37
+        static constexpr std::size_t idx{ 55 }; // 0x37
     };
 
     class AddObjectToContainer : public Singleton<AddObjectToContainer> {
@@ -20,7 +20,7 @@ namespace Hooks {
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
-        inline static constexpr std::size_t idx = 90; // 0x5a
+        static constexpr std::size_t idx{ 90 }; // 0x5a
     };
 
     class PickupObject : public Singleton<PickupObject> {
@@ -29,10 +29,10 @@ namespace Hooks {
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
-        inline static std::size_t idx = 204; // 0xcc
+        static constexpr std::size_t idx{ 204 }; // 0xcc
     };
 
-    inline static const RE::BSFixedString items_stolen = "Items Stolen";
+    inline static const RE::BSFixedString items_stolen{ "Items Stolen" };
 
-    bool IncrementStat(const RE::BSFixedString* a_stat = &items_stolen, std::int32_t a_value = 1);
+    static bool IncrementStat(const RE::BSFixedString* a_stat = &items_stolen, std::int32_t a_value = 1);
 }
