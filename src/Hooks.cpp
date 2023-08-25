@@ -35,21 +35,23 @@ namespace Hooks {
 
     void AddObjectToContainer::Thunk(RE::Actor* a_this, RE::TESBoundObject* a_object, RE::ExtraDataList* a_extraList, std::int32_t a_count,
                                      RE::TESObjectREFR* a_fromRefr) {
+        func(a_this, a_object, a_extraList, a_count, a_fromRefr);
+
         if (a_object && a_fromRefr && a_extraList) {
             logger::debug("Object: {} (0x{:x})", a_object->GetName(), a_object->GetFormID());
-            const auto form_type = a_fromRefr->GetBaseObject()->GetFormType();
-            logger::debug("\tFrom: {} (0x{:x}) (type {})", a_fromRefr->GetName(), a_fromRefr->GetFormID(), form_type);
-            if (const auto owner = a_extraList->GetOwner(); form_type == RE::FormType::Container) {
-                const auto owner_name = owner->GetName();
-                logger::debug("\tOwner: {} (0x{:x})", owner_name, owner->GetFormID());
-                if (!owner->IsPlayerRef()) {
-                    logger::debug("\tPlayer is not owner {}. Incrementing Items Stolen stat...", owner_name);
-                    IncrementStat();
+            if (const auto base_obj = a_fromRefr->GetBaseObject()) {
+                const auto form_type = base_obj->GetFormType();
+                logger::debug("\tFrom: {} (0x{:x}) (type {})", a_fromRefr->GetName(), a_fromRefr->GetFormID(), form_type);
+                if (const auto owner = a_extraList->GetOwner(); form_type == RE::FormType::Container) {
+                    const auto owner_name = owner->GetName();
+                    logger::debug("\tOwner: {} (0x{:x})", owner_name, owner->GetFormID());
+                    if (!owner->IsPlayerRef()) {
+                        logger::debug("\tPlayer is not owner {}. Incrementing Items Stolen stat...", owner_name);
+                        IncrementStat();
+                    }
                 }
             }
         }
-
-        return func(a_this, a_object, a_extraList, a_count, a_fromRefr);
     }
 
     void PickupObject::Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_object, uint32_t a_count, bool a_arg3, bool a_playSound) {
