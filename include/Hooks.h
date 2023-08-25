@@ -29,7 +29,7 @@ namespace Hooks {
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
-        static constexpr std::size_t idx{ 204 }; // 0xcc
+        inline static std::size_t idx{ 204 }; // 0xcc
     };
 
     inline static const RE::BSFixedString items_stolen{ "Items Stolen" };
