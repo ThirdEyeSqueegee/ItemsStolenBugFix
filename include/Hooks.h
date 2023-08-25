@@ -23,7 +23,16 @@ namespace Hooks {
         inline static constexpr std::size_t idx = 90; // 0x5a
     };
 
+    class PickupObject : public Singleton<PickupObject> {
+    public:
+        static void Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_object, uint32_t a_count, bool a_arg3, bool a_playSound);
+
+        inline static REL::Relocation<decltype(&Thunk)> func;
+
+        inline static std::size_t idx = 204; // 0xcc
+    };
+
     inline static const RE::BSFixedString items_stolen = "Items Stolen";
 
-    bool IncrementStat(const RE::BSFixedString* stat = &items_stolen, std::int32_t value = 1);
+    bool IncrementStat(const RE::BSFixedString* a_stat = &items_stolen, std::int32_t a_value = 1);
 }
