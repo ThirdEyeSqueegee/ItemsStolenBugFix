@@ -42,25 +42,28 @@ namespace Hooks {
             if (const auto base_obj = a_fromRefr->GetBaseObject()) {
                 const auto form_type = base_obj->GetFormType();
                 logger::debug("\tFrom: {} (0x{:x}) (type {})", a_fromRefr->GetName(), a_fromRefr->GetFormID(), form_type);
-                if (const auto owner = a_extraList->GetOwner(); form_type == RE::FormType::Container) {
-                    const auto owner_name = owner->GetName();
-                    logger::debug("\tOwner: {} (0x{:x})", owner_name, owner->GetFormID());
-                    if (!owner->IsPlayerRef()) {
-                        logger::debug("\tPlayer is not owner {}. Incrementing Items Stolen stat...", owner_name);
-                        IncrementStat();
+                if (form_type == RE::FormType::Container || form_type == RE::FormType::NPC) {
+                    logger::info("\tFrom refr is container or NPC");
+                    if (const auto owner = a_extraList->GetOwner()) {
+                        const auto owner_name = owner->GetName();
+                        logger::debug("\tOwner: {} (0x{:x})", owner_name, owner->GetFormID());
+                        if (!owner->IsPlayerRef()) {
+                            logger::debug("\tPlayer is not owner {}. Incrementing Items Stolen stat...", owner_name);
+                            IncrementStat();
+                        }
                     }
                 }
             }
         }
     }
 
-    void PickupObject::Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_object, uint32_t a_count, bool a_arg3, bool a_playSound) {
-        func(a_this, a_object, a_count, a_arg3, a_playSound);
+    void PickupObject::Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_ref, uint32_t a_count, bool a_arg3, bool a_playSound) {
+        func(a_this, a_ref, a_count, a_arg3, a_playSound);
 
-        if (!a_object->IsGold())
+        if (!a_ref->GetBaseObject()->IsGold())
             return;
 
-        if (a_object->IsCrimeToActivate()) {
+        if (a_ref->IsCrimeToActivate()) {
             logger::debug("Player stealing coin");
             IncrementStat();
         }

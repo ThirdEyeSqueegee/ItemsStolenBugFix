@@ -25,7 +25,7 @@ namespace Hooks {
 
     class PickupObject : public Singleton<PickupObject> {
     public:
-        static void Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_object, uint32_t a_count, bool a_arg3, bool a_playSound);
+        static void Thunk(RE::PlayerCharacter* a_this, RE::TESObjectREFR* a_ref, uint32_t a_count, bool a_arg3, bool a_playSound);
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
