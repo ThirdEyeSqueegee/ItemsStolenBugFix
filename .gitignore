@@ -1,4 +1,4 @@
 build
 *ReSharper*
 .vs
-contrib\Plugin*
+contrib/Plugin*
