@@ -4,10 +4,9 @@
 
 #include "SKSE/Interfaces.h"
 
-void Listener(SKSE::MessagingInterface::Message* message)
+void Listener(SKSE::MessagingInterface::Message* message) noexcept
 {
-    if (message->type <=> SKSE::MessagingInterface::kDataLoaded == 0)
-    {
+    if (message->type <=> SKSE::MessagingInterface::kDataLoaded == 0) {
         Settings::LoadSettings();
         Hooks::Install();
     }
@@ -24,8 +23,9 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse)
 
     Init(skse);
 
-    if (const auto messaging{ SKSE::GetMessagingInterface() }; !messaging->RegisterListener(Listener))
+    if (const auto messaging{ SKSE::GetMessagingInterface() }; !messaging->RegisterListener(Listener)) {
         return false;
+    }
 
     logger::info("{} has finished loading.", plugin->GetName());
 

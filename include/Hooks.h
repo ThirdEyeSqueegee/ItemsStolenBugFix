@@ -6,13 +6,13 @@ namespace Hooks
 
     static bool IncrementStat(const RE::BSFixedString* a_stat = &items_stolen, std::int32_t a_value = 1);
 
-    void Install();
+    void Install() noexcept;
 
     class ActivateFlora : public Singleton<ActivateFlora>
     {
     public:
-        static bool Thunk(RE::TESFlora* a_this, RE::TESObjectREFR* a_targetRef, RE::TESObjectREFR* a_activatorRef, std::uint8_t a_arg3,
-                          RE::TESBoundObject* a_object, std::int32_t a_targetCount);
+        static bool Thunk(RE::TESFlora* a_this, RE::TESObjectREFR* a_targetRef, RE::TESObjectREFR* a_activatorRef, std::uint8_t a_arg3, RE::TESBoundObject* a_object,
+                          std::int32_t a_targetCount);
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
@@ -22,8 +22,7 @@ namespace Hooks
     class AddObjectToContainer : public Singleton<AddObjectToContainer>
     {
     public:
-        static void Thunk(RE::Actor* a_this, RE::TESBoundObject* a_object, RE::ExtraDataList* a_extraList, std::int32_t a_count,
-                          RE::TESObjectREFR* a_fromRefr);
+        static void Thunk(RE::Actor* a_this, RE::TESBoundObject* a_object, RE::ExtraDataList* a_extraList, std::int32_t a_count, RE::TESObjectREFR* a_fromRefr);
 
         inline static REL::Relocation<decltype(&Thunk)> func;
 
